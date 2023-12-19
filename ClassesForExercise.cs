@@ -14,6 +14,8 @@ namespace ClassesForExercise
         //Add events to the class to notify upon threshhold reached and shut down!
         #region events
         #endregion
+        public event Action ReachedThreshhold;
+        public event Action Shutdown;
         private int Threshold { get; }
         public int Capacity { get; set; }
         public int Percent
