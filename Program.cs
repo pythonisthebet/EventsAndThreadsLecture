@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Net.Http.Headers;
 
 namespace CoreCollectionsAsync
 {
@@ -102,10 +103,30 @@ namespace CoreCollectionsAsync
 
         }
 
+        static void CarSut()
+        {
+            Console.WriteLine("nani?");
+            Console.WriteLine("eeeeeeeeeeeeee");
+        }
+
 
         static void Main(string[] args)
-        {
-            DemoAsync().Wait();
+        {            
+            for (int i = 0; i < 20; i++) 
+            {
+                ElectricCar coolcar = new ElectricCar(i);
+                coolcar.OnCarShutDown += CarSut;
+                Thread car = new Thread(coolcar.StartEngine);
+                car.Start();
+            }
+            Thread.Sleep(99999);
+
+
+
+
+
+
+            //DemoAsync().Wait();
             //1. Prepare Omlette with no progress bar
             //DelegateAndEventsDemo.RunDemo_1();
 

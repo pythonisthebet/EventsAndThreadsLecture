@@ -1,11 +1,13 @@
-﻿using System;
+﻿using CoreCollectionsAsync;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ClassesForExercise
+namespace CoreCollectionsAsync
 {
     public class Battery
     {
@@ -16,7 +18,7 @@ namespace ClassesForExercise
         #endregion
         public event Action ReachedThreshhold;
         public event Action Shutdown;
-        private int Threshold { get; }
+        public int Threshold { get; }
         public int Capacity { get; set; }
         public int Percent
         {
@@ -34,6 +36,11 @@ namespace ClassesForExercise
         public void Usage()
         {
             Capacity -= r.Next(50, 150);
+            if(ReachedThreshhold != null&&Capacity<Threshold&& Capacity > 0)
+                ReachedThreshhold();
+            if(Shutdown != null&&Capacity<=0)
+                Shutdown();
+                
             //Add calls to the events based on the capacity and threshhold
             #region Fire Events
             #endregion
@@ -53,6 +60,8 @@ namespace ClassesForExercise
         {
             this.id = id;
             Bat = new Battery();
+            Bat.ReachedThreshhold += BThrash;
+            Bat.Shutdown += BShut;
             #region Register to battery events
             #endregion
         }
@@ -67,6 +76,18 @@ namespace ClassesForExercise
         }
 
         //Add code to Define and implement the battery event implementations
+        public void BThrash()
+        {
+            if (Bat.Capacity < Bat.Threshold)
+            {
+                Console.WriteLine($"threshhold reached, fuck ! fuck! fuck! please do something! we are going to die! car {id} only have {Bat.Percent} remaining");
+            }
+        }
+        public void BShut()
+        {
+            Console.WriteLine($"omiya mou shindeiru");
+        }
+
         #region events implementation
         #endregion
 
